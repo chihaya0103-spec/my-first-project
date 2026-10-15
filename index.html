@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>子連れ旅行 持ち物チェックリスト【無料・スマホで使える】</title>
+<meta name="description" content="赤ちゃん・幼児連れの家族旅行の持ち物を、スマホでチェックしながら準備できる無料チェックリスト。チェックは自動保存。出発前にやることリスト付き。">
+<meta property="og:title" content="子連れ旅行 持ち物チェックリスト【無料】">
+<meta property="og:description" content="赤ちゃん・幼児連れの家族旅行の持ち物をスマホでチェック。チェックは自動保存されます。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f6efe6">
+<style>
+:root{
+  --bg:#f6efe6; --card:#fffaf3; --ink:#2f2a25; --sub:#7a6f64; --line:#e6dccf;
+  --accent:#e0794f; --accent-ink:#fff; --ok:#5b9a6e; --chip:#efe4d6;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1d1a17; --card:#27231f; --ink:#f1ebe3; --sub:#b3a797; --line:#3a342e;
+    --accent:#ef8a5f; --accent-ink:#1d1a17; --ok:#7cc290; --chip:#332d27; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 120px}
+header h1{font-size:1.45rem;margin:8px 0 4px;line-height:1.35}
+header p{color:var(--sub);margin:0 0 16px;font-size:.92rem}
+.progress{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;margin-bottom:8px}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.ptext{display:flex;justify-content:space-between;font-size:.85rem;color:var(--sub);margin-top:6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 16px}
+.chips button{border:1px solid var(--line);background:var(--chip);color:var(--ink);
+  padding:6px 14px;border-radius:99px;font:inherit;font-size:.88rem;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+section.cat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 14px 10px;margin-bottom:14px}
+section.cat h2{font-size:1.02rem;margin:10px 0 4px;display:flex;justify-content:space-between;align-items:center}
+section.cat h2 small{font-weight:normal;color:var(--sub);font-size:.8rem}
+label.item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--line);cursor:pointer}
+label.item:first-of-type{border-top:none}
+label.item input{width:22px;height:22px;margin-top:2px;accent-color:var(--ok);flex:none}
+label.item .t{flex:1}
+label.item .n{display:block;font-size:.8rem;color:var(--sub)}
+label.item input:checked + .t{color:var(--sub);text-decoration:line-through}
+.tag{font-size:.7rem;background:var(--chip);border-radius:6px;padding:1px 6px;margin-left:6px;color:var(--sub);white-space:nowrap}
+.hidden{display:none!important}
+.cta{background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:18px 16px;margin:24px 0}
+.cta h2{margin:0 0 6px;font-size:1.08rem}
+.cta p{margin:0 0 12px;font-size:.92rem;color:var(--sub)}
+.btn{display:block;text-align:center;background:var(--accent);color:var(--accent-ink);text-decoration:none;
+  font-weight:bold;padding:13px;border-radius:12px}
+.tools{display:flex;gap:10px;margin-top:8px}
+.tools button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px;border-radius:12px;font:inherit;cursor:pointer}
+footer{color:var(--sub);font-size:.78rem;text-align:center;margin-top:28px}
+@media print{
+  .progress,.chips,.cta,.tools,footer{display:none}
+  body{background:#fff;color:#000} section.cat{break-inside:avoid;border-color:#ccc}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>子連れ旅行 持ち物チェックリスト</h1>
+  <p>赤ちゃん・幼児連れの家族旅行向け。タップでチェックでき、閉じても自動で保存されます（この端末のみ）。</p>
+</header>
+
+<div class="progress" aria-live="polite">
+  <div class="bar"><i id="barFill"></i></div>
+  <div class="ptext"><span id="pCount">0 / 0</span><span id="pMsg">準備をはじめましょう</span></div>
+</div>
+
+<div class="chips" role="group" aria-label="表示の切り替え">
+  <button data-f="all" aria-pressed="true">すべて</button>
+  <button data-f="baby" aria-pressed="false">赤ちゃん連れ</button>
+  <button data-f="kid" aria-pressed="false">幼児連れ</button>
+  <button data-f="todo" aria-pressed="false">未チェックだけ</button>
+</div>
+
+<main id="list"></main>
+
+<div class="cta">
+  <h2>旅行のしおりも作りたい方へ</h2>
+  <p>行程表・予算表・持ち物リストがひとつになった「家族旅行のしおり」テンプレートを販売中。Excelで編集できる版と、すぐ印刷できるPDF版があります。</p>
+  <a class="btn" href="https://chihayaaa.booth.pm/items/8988556" target="_blank" rel="noopener">BOOTHで見てみる</a>
+</div>
+
+<div class="tools">
+  <button id="printBtn">印刷する</button>
+  <button id="resetBtn">チェックをリセット</button>
+</div>
+
+<footer>© chihayaaa ・ 持ち物は目安です。行き先や季節に合わせて調整してください。</footer>
+</div>
+
+<script>
+const DATA = [
+  {cat:"出発前にやること", items:[
+    ["宿・交通の予約内容を確認",""],
+    ["子どもの体調チェック・かかりつけ医の診察時間を確認",""],
+    ["行き先の天気予報を確認",""],
+    ["スマホ・モバイルバッテリーを充電",""],
+    ["ゴミ出し・戸締まり・ガスの確認",""]
+  ]},
+  {cat:"貴重品・書類", items:[
+    ["財布・現金・交通系IC",""],
+    ["健康保険証（家族全員分）","子どもの医療証も"],
+    ["母子手帳","", "baby"],
+    ["予約確認の画面・控え",""],
+    ["スマホ・充電器",""]
+  ]},
+  {cat:"着替え・衣類", items:[
+    ["子どもの着替え（日数＋1〜2セット）","汚れたとき用に多めに"],
+    ["パジャマ",""],
+    ["羽織もの（冷房・朝晩の冷え対策）",""],
+    ["靴下・下着",""],
+    ["帽子",""],
+    ["大人の着替え",""]
+  ]},
+  {cat:"赤ちゃん用品", items:[
+    ["おむつ（1日の目安＋予備）","", "baby"],
+    ["おしりふき","", "baby"],
+    ["ミルク・哺乳瓶・お湯","", "baby"],
+    ["離乳食・スプーン・エプロン","", "baby"],
+    ["抱っこひも","", "baby"],
+    ["ガーゼ・スタイ","", "baby"]
+  ]},
+  {cat:"幼児用品", items:[
+    ["トイレ用の予備パンツ・おむつ","", "kid"],
+    ["おやつ・飲み物","", "kid"],
+    ["お気に入りのぬいぐるみ・タオル","眠るときに安心", "kid"],
+    ["補助便座（折りたたみ）","", "kid"]
+  ]},
+  {cat:"衛生・お薬", items:[
+    ["常備薬・解熱剤","普段使っているもの"],
+    ["体温計",""],
+    ["絆創膏",""],
+    ["ウェットティッシュ・ティッシュ",""],
+    ["ビニール袋（ゴミ・汚れ物用）","多めにあると便利"],
+    ["虫よけ・日焼け止め","季節に合わせて"]
+  ]},
+  {cat:"移動中・宿で", items:[
+    ["シール帳・絵本・小さなおもちゃ","飽きたとき用"],
+    ["動画をダウンロードしたタブレット",""],
+    ["酔い止め","乗り物に弱い場合"],
+    ["歯ブラシ・子ども用歯みがき",""],
+    ["子ども用シャンプー・保湿クリーム",""]
+  ]}
+];
+
+const KEY = "kozure-checklist-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+
+const list = document.getElementById("list");
+DATA.forEach((c, ci) => {
+  const sec = document.createElement("section");
+  sec.className = "cat";
+  const h = document.createElement("h2");
+  h.innerHTML = `<span>${c.cat}</span><small></small>`;
+  sec.appendChild(h);
+  c.items.forEach((it, ii) => {
+    const id = `${ci}-${ii}`;
+    const [name, note, tag] = it;
+    const lab = document.createElement("label");
+    lab.className = "item";
+    lab.dataset.tag = tag || "";
+    lab.innerHTML = `<input type="checkbox" data-id="${id}"${state[id] ? " checked" : ""}>
+      <span class="t">${name}${tag==="baby"?'<span class="tag">赤ちゃん</span>':tag==="kid"?'<span class="tag">幼児</span>':""}${note?`<span class="n">${note}</span>`:""}</span>`;
+    sec.appendChild(lab);
+  });
+  list.appendChild(sec);
+});
+
+let filter = "all";
+function render(){
+  const boxes = [...document.querySelectorAll("input[data-id]")];
+  let total = 0, done = 0;
+  document.querySelectorAll("section.cat").forEach(sec => {
+    let shown = 0, sDone = 0, sTotal = 0;
+    sec.querySelectorAll("label.item").forEach(lab => {
+      const box = lab.querySelector("input");
+      const tag = lab.dataset.tag;
+      let vis = true;
+      if (filter === "baby" && tag === "kid") vis = false;
+      if (filter === "kid" && tag === "baby") vis = false;
+      if (filter === "todo" && box.checked) vis = false;
+      lab.classList.toggle("hidden", !vis);
+      const counts = !((filter==="baby"&&tag==="kid")||(filter==="kid"&&tag==="baby"));
+      if (counts){ sTotal++; total++; if (box.checked){ sDone++; done++; } }
+      if (vis) shown++;
+    });
+    sec.querySelector("h2 small").textContent = `${sDone} / ${sTotal}`;
+    sec.classList.toggle("hidden", shown === 0);
+  });
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById("barFill").style.width = pct + "%";
+  document.getElementById("pCount").textContent = `${done} / ${total}`;
+  document.getElementById("pMsg").textContent =
+    pct === 100 ? "準備完了！いってらっしゃい" : pct >= 50 ? "あと少し！" : pct > 0 ? "いい調子です" : "準備をはじめましょう";
+}
+
+list.addEventListener("change", e => {
+  const id = e.target.dataset.id;
+  if (!id) return;
+  state[id] = e.target.checked;
+  save(); render();
+});
+document.querySelectorAll(".chips button").forEach(b => b.addEventListener("click", () => {
+  filter = b.dataset.f;
+  document.querySelectorAll(".chips button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+}));
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("チェックをすべて外しますか？")) return;
+  state = {}; save();
+  document.querySelectorAll("input[data-id]").forEach(b => b.checked = false);
+  render();
+});
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+render();
+</script>
+</body>
+</html>
