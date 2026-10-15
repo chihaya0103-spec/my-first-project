@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家族旅行 予算シミュレーター【無料・子連れ対応】</title>
+<meta name="description" content="家族の人数・泊数・交通手段を入れるだけで、子連れ家族旅行の総予算と内訳をその場で計算できる無料ツール。車・電車・飛行機に対応。">
+<meta property="og:title" content="家族旅行 予算シミュレーター【無料】">
+<meta property="og:description" content="人数・泊数・交通手段から、家族旅行の総予算と内訳をすぐに計算。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f6efe6">
+<style>
+:root{
+  --bg:#f6efe6; --card:#fffaf3; --ink:#2f2a25; --sub:#7a6f64; --line:#e6dccf;
+  --accent:#e0794f; --accent-ink:#fff; --ok:#5b9a6e; --chip:#efe4d6;
+  --c1:#e0794f; --c2:#5b9a6e; --c3:#d9a441; --c4:#6f8fbf; --c5:#a77cb3;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1d1a17; --card:#27231f; --ink:#f1ebe3; --sub:#b3a797; --line:#3a342e;
+    --accent:#ef8a5f; --accent-ink:#1d1a17; --ok:#7cc290; --chip:#332d27; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+nav a{color:var(--sub);font-size:.85rem}
+h1{font-size:1.45rem;margin:8px 0 4px;line-height:1.35}
+.lead{color:var(--sub);margin:0 0 16px;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.card h2{font-size:1.02rem;margin:4px 0 8px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.row:first-of-type{border-top:none}
+.row label{flex:1;font-size:.95rem}
+.row label small{display:block;color:var(--sub);font-size:.78rem}
+input[type=number]{width:120px;font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);text-align:right}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.seg button{border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:6px 14px;border-radius:99px;font:inherit;font-size:.88rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.result{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 10px}
+.total{background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:12px 14px}
+.total .big{font-size:1.8rem;font-weight:bold;line-height:1.2}
+.total .per{color:var(--sub);font-size:.85rem}
+.stack{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:10px 0 6px;background:var(--line)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem;color:var(--sub)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;background:var(--c)}
+.hidden{display:none!important}
+.cta{background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:18px 16px;margin:24px 0}
+.cta h2{margin:0 0 6px;font-size:1.08rem}
+.cta p{margin:0 0 12px;font-size:.92rem;color:var(--sub)}
+.btn{display:block;text-align:center;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:bold;padding:13px;border-radius:12px}
+.btn2{display:block;text-align:center;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;padding:12px;border-radius:12px;margin-top:10px}
+footer{color:var(--sub);font-size:.78rem;text-align:center;margin-top:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="../">← 子連れ旅行 持ち物チェックリスト</a></nav>
+<h1>家族旅行 予算シミュレーター</h1>
+<p class="lead">人数や泊数を入れると、旅行全体の予算と内訳をその場で計算します。金額の初期値は目安なので、予約サイトで見た金額に書き換えて使ってください。</p>
+
+<div class="result">
+  <div class="total" aria-live="polite">
+    <div class="per">予算の合計（目安）</div>
+    <div class="big" id="total">0円</div>
+    <div class="per" id="perPerson"></div>
+    <div class="stack" id="stack"></div>
+    <div class="legend" id="legend"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>人数・日程</h2>
+  <div class="row"><label for="adults">大人</label><input type="number" id="adults" min="1" value="2" inputmode="numeric"></div>
+  <div class="row"><label for="kids">小学生<small>交通費・宿泊費は大人の半額で計算</small></label><input type="number" id="kids" min="0" value="0" inputmode="numeric"></div>
+  <div class="row"><label for="small">未就学児<small>交通・宿泊は無料で計算（添い寝など）</small></label><input type="number" id="small" min="0" value="2" inputmode="numeric"></div>
+  <div class="row"><label for="nights">泊数</label><input type="number" id="nights" min="0" value="1" inputmode="numeric"></div>
+</div>
+
+<div class="card">
+  <h2>交通手段</h2>
+  <div class="seg" role="group" aria-label="交通手段">
+    <button data-m="car" aria-pressed="true">車</button>
+    <button data-m="train" aria-pressed="false">電車・新幹線</button>
+    <button data-m="plane" aria-pressed="false">飛行機</button>
+  </div>
+  <div id="carBox">
+    <div class="row"><label for="km">往復の距離（km）</label><input type="number" id="km" min="0" value="300" inputmode="numeric"></div>
+    <div class="row"><label for="fuel">燃費（km/L）</label><input type="number" id="fuel" min="1" value="13" inputmode="decimal"></div>
+    <div class="row"><label for="gas">ガソリン代（円/L）</label><input type="number" id="gas" min="0" value="170" inputmode="numeric"></div>
+    <div class="row"><label for="toll">高速代・駐車場（往復合計）</label><input type="number" id="toll" min="0" value="6000" inputmode="numeric"></div>
+  </div>
+  <div id="fareBox" class="hidden">
+    <div class="row"><label for="fare">大人1人の往復運賃</label><input type="number" id="fare" min="0" value="20000" inputmode="numeric"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>宿泊・食事・その他</h2>
+  <div class="row"><label for="hotel">大人1人1泊の宿泊費</label><input type="number" id="hotel" min="0" value="12000" inputmode="numeric"></div>
+  <div class="row"><label for="food">食事代（家族全体で1日あたり）<small>宿で出る食事は除く</small></label><input type="number" id="food" min="0" value="8000" inputmode="numeric"></div>
+  <div class="row"><label for="fun">入場料・レジャー（合計）</label><input type="number" id="fun" min="0" value="10000" inputmode="numeric"></div>
+  <div class="row"><label for="gift">おみやげ（合計）</label><input type="number" id="gift" min="0" value="5000" inputmode="numeric"></div>
+  <div class="row"><label for="buffer">予備費（合計に対する％）</label><input type="number" id="buffer" min="0" value="10" inputmode="numeric"></div>
+</div>
+
+<div class="cta">
+  <h2>計算した予算をしおりにまとめるなら</h2>
+  <p>予算表・行程表・持ち物リストがひとつになった「家族旅行のしおり」テンプレートを販売中。Excelで編集できる版と、すぐ印刷できるPDF版があります。</p>
+  <a class="btn" href="https://chihayaaa.booth.pm/items/8988556" target="_blank" rel="noopener">BOOTHで見てみる</a>
+  <a class="btn2" href="../">無料の持ち物チェックリストも使う</a>
+</div>
+
+<footer>© chihayaaa ・ 計算結果は目安です。実際の料金は各予約サイトでご確認ください。</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const num = id => { const v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; };
+let mode = "car";
+const yen = n => Math.round(n).toLocaleString("ja-JP") + "円";
+const KEY = "family-budget-v1";
+const FIELDS = ["adults","kids","small","nights","km","fuel","gas","toll","fare","hotel","food","fun","gift","buffer"];
+
+try {
+  const s = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (s) { FIELDS.forEach(f => { if (s[f] !== undefined) $(f).value = s[f]; }); if (s.mode) mode = s.mode; }
+} catch(e) {}
+
+function calc(){
+  const adults = num("adults"), kids = num("kids"), small = num("small"), nights = num("nights");
+  const unit = adults + kids * 0.5;
+  let move = 0;
+  if (mode === "car") {
+    const fuel = num("fuel") || 1;
+    move = num("km") / fuel * num("gas") + num("toll");
+  } else {
+    move = num("fare") * unit;
+  }
+  const stay = num("hotel") * unit * nights;
+  const food = num("food") * (nights + 1);
+  const fun = num("fun") + num("gift");
+  const sub = move + stay + food + fun;
+  const buf = sub * num("buffer") / 100;
+  const total = sub + buf;
+  const people = adults + kids + small;
+
+  $("total").textContent = yen(total);
+  $("perPerson").textContent = people ? `家族${people}人・${nights}泊${nights+1}日 ／ 1人あたり 約${yen(total/people)}` : "";
+  const parts = [["交通",move,"var(--c1)"],["宿泊",stay,"var(--c2)"],["食事",food,"var(--c3)"],["レジャー・おみやげ",fun,"var(--c4)"],["予備費",buf,"var(--c5)"]];
+  $("stack").innerHTML = parts.map(p => `<i style="width:${total ? p[1]/total*100 : 0}%;background:${p[2]}"></i>`).join("");
+  $("legend").innerHTML = parts.map(p => `<span style="--c:${p[2]}">${p[0]} ${yen(p[1])}</span>`).join("");
+
+  $("carBox").classList.toggle("hidden", mode !== "car");
+  $("fareBox").classList.toggle("hidden", mode === "car");
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === mode));
+
+  try { const s = {mode}; FIELDS.forEach(f => s[f] = $(f).value); localStorage.setItem(KEY, JSON.stringify(s)); } catch(e) {}
+}
+document.querySelectorAll("input").forEach(i => i.addEventListener("input", calc));
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  mode = b.dataset.m;
+  if (mode === "plane" && $("fare").value === "20000") $("fare").value = 30000;
+  calc();
+}));
+calc();
+</script>
+</body>
+</html>
