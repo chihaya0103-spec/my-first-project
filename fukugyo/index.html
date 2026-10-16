@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>副業の確定申告いる？20万円ルールかんたんチェック【会社員向け・無料】</title>
+<meta name="description" content="会社員の副業は確定申告が必要？売上と経費を入れるだけで、20万円ルールの判定と住民税の申告の要否、税金の目安がわかる無料チェックツール。">
+<meta property="og:title" content="副業の確定申告いる？20万円ルールかんたんチェック">
+<meta property="og:description" content="売上と経費を入れるだけで、確定申告が必要かどうかの目安がわかる無料ツール（会社員向け）。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#eef2f0">
+<style>
+:root{
+  --bg:#eef2f0; --card:#fbfdfc; --ink:#1f2a26; --sub:#5f6f69; --line:#d6dfdb;
+  --accent:#2f7d62; --accent-ink:#fff; --warn:#c0573a; --warn-bg:#fbebe5; --ok-bg:#e3f2ea; --chip:#e2e9e6;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#151b19; --card:#1d2522; --ink:#e8efec; --sub:#a3b3ad; --line:#2f3a36;
+    --accent:#56b48f; --accent-ink:#0f1513; --warn:#f08a6c; --warn-bg:#3a241d; --ok-bg:#1f3529; --chip:#26302c; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.65}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.4rem;margin:8px 0 6px;line-height:1.4}
+.lead{color:var(--sub);margin:0 0 18px;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.card h2{font-size:1rem;margin:4px 0 8px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px dashed var(--line)}
+.row:first-of-type{border-top:none}
+.row label{flex:1;font-size:.95rem}
+.row label small{display:block;color:var(--sub);font-size:.78rem}
+.yen{display:flex;align-items:center;gap:4px}
+input[type=number]{width:140px;font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);text-align:right}
+select{font:inherit;font-size:16px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);max-width:180px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line);font-size:.93rem;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex:none}
+.verdict{border-radius:14px;padding:14px;margin-bottom:14px;border:2px solid var(--accent);background:var(--ok-bg)}
+.verdict.must{border-color:var(--warn);background:var(--warn-bg)}
+.verdict .label{font-size:.8rem;color:var(--sub)}
+.verdict .big{font-size:1.35rem;font-weight:bold;margin:2px 0 6px;line-height:1.4}
+.verdict ul{margin:6px 0 0;padding-left:1.2em;font-size:.92rem}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.num{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.num .k{font-size:.78rem;color:var(--sub)}
+.num .v{font-size:1.2rem;font-weight:bold}
+.note{font-size:.8rem;color:var(--sub)}
+.cta{background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:18px 16px;margin:24px 0}
+.cta h2{margin:0 0 6px;font-size:1.06rem}
+.cta p{margin:0 0 12px;font-size:.92rem;color:var(--sub)}
+.btn{display:block;text-align:center;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:bold;padding:13px;border-radius:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:10px}
+details summary{cursor:pointer;font-weight:bold;font-size:.95rem}
+details p{font-size:.9rem;margin:8px 0 4px}
+footer{color:var(--sub);font-size:.76rem;margin-top:28px;line-height:1.6}
+footer a{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>副業の確定申告いる？<br>20万円ルールかんたんチェック</h1>
+<p class="lead">会社にお勤めで、給与を1か所から受け取り年末調整を受けている方向けです。副業の1年間（1〜12月）の売上と経費を入れると、確定申告が必要かどうかの目安がわかります。</p>
+
+<div class="card">
+  <h2>1年間の副業の金額</h2>
+  <div class="row"><label for="sales">売上（収入）<small>クラウドソーシングは手数料を引かれる前の金額</small></label><span class="yen"><input type="number" id="sales" min="0" value="300000" inputmode="numeric">円</span></div>
+  <div class="row"><label for="cost">経費<small>副業のために使ったお金（手数料・通信費・道具代など）</small></label><span class="yen"><input type="number" id="cost" min="0" value="60000" inputmode="numeric">円</span></div>
+</div>
+
+<div class="card">
+  <h2>あてはまるものにチェック</h2>
+  <label class="check"><input type="checkbox" id="over2000"><span>本業の給与が年2,000万円を超える</span></label>
+  <label class="check"><input type="checkbox" id="deduct"><span>医療費控除・住宅ローン控除（1年目）・寄付金控除などで、どのみち確定申告をする予定がある<br><small class="note">ふるさと納税で6自治体以上に寄付した場合も含みます</small></span></label>
+</div>
+
+<div id="verdict" class="verdict" aria-live="polite">
+  <div class="label">判定の目安</div>
+  <div class="big" id="vTitle"></div>
+  <ul id="vList"></ul>
+</div>
+
+<div class="nums">
+  <div class="num"><div class="k">副業の所得（売上−経費）</div><div class="v" id="income">0円</div></div>
+  <div class="num"><div class="k">20万円まであと</div><div class="v" id="left">0円</div></div>
+</div>
+
+<div class="card">
+  <h2>税金の目安（任意）</h2>
+  <div class="row"><label for="rate">本業の年収<small>所得税の税率の目安を選びます</small></label>
+    <select id="rate">
+      <option value="0.05">〜約360万円</option>
+      <option value="0.10" selected>約360〜650万円</option>
+      <option value="0.20">約650〜900万円</option>
+      <option value="0.23">約900〜1,100万円</option>
+      <option value="0.33">約1,100万円〜</option>
+    </select></div>
+  <div class="nums" style="margin:10px 0 4px">
+    <div class="num"><div class="k">増える所得税の目安</div><div class="v" id="itax">0円</div></div>
+    <div class="num"><div class="k">増える住民税の目安</div><div class="v" id="rtax">0円</div></div>
+  </div>
+  <p class="note">所得税（復興特別所得税を含む）は「副業の所得×税率×1.021」、住民税は「副業の所得×10%」で計算したおおよその金額です。扶養や各種控除によって実際の金額は変わります。</p>
+</div>
+
+<div class="cta">
+  <h2>申告の準備を1年分ラクにする</h2>
+  <p>売上と経費を入れるだけで、月別の集計・年間の所得・20万円ルールの判定まで自動で出るExcelシートを販売しています。確定申告の時期にまとめて慌てないために。</p>
+  <a class="btn" id="ctaBtn" href="https://chihayaaa.booth.pm/" target="_blank" rel="noopener">BOOTHで見てみる</a>
+</div>
+
+<h2 style="font-size:1.05rem">よくある疑問</h2>
+<details><summary>20万円は「売上」と「所得」のどちら？</summary>
+<p>「所得」です。所得は売上から経費を引いた金額なので、売上が20万円を超えていても、経費を引いて20万円以下なら確定申告は原則不要です。</p></details>
+<details><summary>20万円以下なら何もしなくていい？</summary>
+<p>所得税の確定申告が不要になるだけで、住民税は別です。20万円以下でも、お住まいの市区町村に住民税の申告が必要です。手続きの方法は市区町村によって異なるので、役所の窓口やホームページで確認してください。</p></details>
+<details><summary>医療費控除で申告するなら、20万円以下の副業も書く？</summary>
+<p>はい。国税庁によると、20万円以下の所得を申告しなくてよいのは、確定申告が不要な場合に限られます。医療費控除などで確定申告をするときは、20万円以下の副業の所得も合わせて申告する必要があります。</p></details>
+<details><summary>副業がアルバイト（給与）の場合は？</summary>
+<p>このツールは、給与以外の副業（クラウドソーシング、ハンドメイド販売、デジタル商品の販売など）を想定しています。2か所以上から給与を受け取っている場合は判定の条件が異なるので、国税庁のページを確認してください。</p></details>
+<details><summary>売上や経費の記録は残しておくべき？</summary>
+<p>はい。確定申告をする・しないにかかわらず、売上や経費がわかる書類（請求書・領収書・振込の記録など）は保存しておきましょう。業務に係る雑所得では、前々年の売上が300万円を超えると、書類の保存が義務になります。</p></details>
+
+<footer>
+このページは国税庁の公開情報（<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1900.htm" target="_blank" rel="noopener">No.1900 給与所得者で確定申告が必要な人</a>）をもとに、一般的なケースの目安を示すものです。個別の事情によって判断は変わります。最終的な判断は、税務署や税理士にご確認ください。<br>
+<a href="../">子連れ旅行 持ち物チェックリスト</a> ／ <a href="../budget/">家族旅行 予算シミュレーター</a><br>
+© chihayaaa
+</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const n = id => { const v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; };
+const yen = x => Math.round(x).toLocaleString("ja-JP") + "円";
+const KEY = "fukugyo-check-v1";
+try {
+  const s = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (s) { $("sales").value = s.sales; $("cost").value = s.cost; $("rate").value = s.rate;
+    $("over2000").checked = !!s.over2000; $("deduct").checked = !!s.deduct; }
+} catch(e) {}
+
+function calc(){
+  const income = Math.max(0, n("sales") - n("cost"));
+  const over = income > 200000;
+  const big = $("over2000").checked, ded = $("deduct").checked;
+  let must = false, title = "", items = [];
+
+  if (big) {
+    must = true; title = "確定申告が必要です";
+    items.push("給与が2,000万円を超える方は、副業の金額にかかわらず確定申告が必要です。");
+  } else if (over) {
+    must = true; title = "確定申告が必要です";
+    items.push(`副業の所得が${yen(income)}で、20万円を超えています。`);
+    items.push("翌年2月16日〜3月15日ごろに、副業の所得を含めて確定申告をします（土日の関係で日付は年により前後します）。");
+    items.push("確定申告をすれば、住民税の申告は別に行う必要はありません。");
+  } else if (ded) {
+    must = true; title = "確定申告をするなら、副業分も書きます";
+    items.push(`副業の所得（${yen(income)}）は20万円以下ですが、医療費控除などで確定申告をする場合は、副業の所得も合わせて申告する必要があります。`);
+  } else {
+    title = "所得税の確定申告は原則不要です";
+    items.push(`副業の所得が${yen(income)}で、20万円以下です。`);
+    items.push("ただし、住民税の申告は必要です。お住まいの市区町村で手続きしてください。");
+    if (income > 150000) items.push("20万円まで残りわずかです。年末までの売上と経費を記録しておきましょう。");
+  }
+  $("verdict").classList.toggle("must", must);
+  $("vTitle").textContent = title;
+  $("vList").innerHTML = items.map(t => `<li>${t}</li>`).join("");
+  $("income").textContent = yen(income);
+  $("left").textContent = over ? "超えています" : yen(200000 - income);
+
+  const r = parseFloat($("rate").value);
+  $("itax").textContent = yen(Math.floor(income * r * 1.021 / 100) * 100);
+  $("rtax").textContent = yen(Math.floor(income * 0.10 / 100) * 100);
+
+  try { localStorage.setItem(KEY, JSON.stringify({sales:$("sales").value, cost:$("cost").value, rate:$("rate").value, over2000:big, deduct:ded})); } catch(e) {}
+}
+document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>
